@@ -1,0 +1,455 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My API",
+        "description": "This Is API Documentation for My Application",
+        "termsOfService": "https://pemwebuas.test/terms",
+        "contact": {
+            "name": "API Support",
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://pemwebuas.test",
+            "description": "Local API Server"
+        }
+    ],
+    "paths": {
+        "/api/alumni": {
+            "get": {
+                "tags": [
+                    "Alumni"
+                ],
+                "summary": "Get all alumni",
+                "description": "Returns a list of all alumni.",
+                "operationId": "getAlumni",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Alumni"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid API Key"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Alumni"
+                ],
+                "summary": "Create a new alumni record",
+                "description": "Stores a new alumni data and returns the encrypted response.",
+                "operationId": "storeAlumni",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama",
+                                    "tahun_lulus",
+                                    "jurusan"
+                                ],
+                                "properties": {
+                                    "nama": {
+                                        "type": "string",
+                                        "example": "Budi Santoso"
+                                    },
+                                    "tahun_lulus": {
+                                        "type": "integer",
+                                        "example": 2020
+                                    },
+                                    "jurusan": {
+                                        "type": "string",
+                                        "example": "Teknik Informatika"
+                                    },
+                                    "pekerjaan": {
+                                        "type": "string",
+                                        "example": "Software Engineer"
+                                    },
+                                    "kontak": {
+                                        "type": "string",
+                                        "example": "+628123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Alumni created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "string",
+                                            "example": "eyJpdiI6In..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error storing alumni data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error storing alumni: ..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/alumni/{id}": {
+            "get": {
+                "tags": [
+                    "Alumni"
+                ],
+                "summary": "Get alumni by ID",
+                "description": "Returns a single alumni data",
+                "operationId": "getAlumniById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Alumni ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "string",
+                                            "example": "eyJpdiI6In..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Alumni not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Alumni"
+                ],
+                "summary": "Update alumni data",
+                "description": "Updates an existing alumni record",
+                "operationId": "updateAlumni",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Alumni ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nama": {
+                                        "type": "string",
+                                        "example": "Updated Name"
+                                    },
+                                    "tahun_lulus": {
+                                        "type": "integer",
+                                        "example": 2021
+                                    },
+                                    "jurusan": {
+                                        "type": "string",
+                                        "example": "Sistem Informasi"
+                                    },
+                                    "pekerjaan": {
+                                        "type": "string",
+                                        "example": "Manager IT"
+                                    },
+                                    "kontak": {
+                                        "type": "string",
+                                        "example": "+628987654321"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Alumni updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "string",
+                                            "example": "eyJpdiI6In..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Alumni not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Alumni"
+                ],
+                "summary": "Delete alumni",
+                "description": "Deletes an alumni by ID",
+                "operationId": "deleteAlumni",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Alumni ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Alumni deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "string",
+                                            "example": "eyJpdiI6In..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Alumni not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/alumni/decrypt": {
+            "post": {
+                "tags": [
+                    "Alumni"
+                ],
+                "summary": "Decrypt encrypted alumni data",
+                "description": "Decrypts the encrypted alumni response.",
+                "operationId": "decryptAlumniResponse",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "data"
+                                ],
+                                "properties": {
+                                    "data": {
+                                        "type": "string",
+                                        "example": "eyJpdiI6IjFPU2h..."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Decrypted response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Decryption failed"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Alumni": {
+                "title": "Alumni",
+                "required": [
+                    "id",
+                    "nama",
+                    "tahun_lulus",
+                    "jurusan"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "nama": {
+                        "type": "string",
+                        "example": "Budi Santoso"
+                    },
+                    "tahun_lulus": {
+                        "type": "integer",
+                        "example": 2020
+                    },
+                    "jurusan": {
+                        "type": "string",
+                        "example": "Teknik Informatika"
+                    },
+                    "pekerjaan": {
+                        "type": "string",
+                        "example": "Software Engineer",
+                        "nullable": true
+                    },
+                    "kontak": {
+                        "type": "string",
+                        "example": "+628123456789",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-21T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-21T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "name": "X-API-KEY",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Alumni",
+            "description": "Alumni"
+        }
+    ]
+}
